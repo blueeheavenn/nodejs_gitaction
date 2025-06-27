@@ -1,37 +1,36 @@
-name: Frontend CI
+name: Build & Deploy React to Vercel
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    paths:
+      - 'client/**'
+      - '.github/workflows/deploy-frontend.yml'
+    branches:
+      - main
 
 jobs:
-  build-frontend:
-    name: Build React Frontend
+  build_and_deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: client
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm i
-
-      - name: Lint (optional, skip if no lint script)
-        run: npm run lint || echo "Linting skipped"
-
-      - name: Run tests (optional)
-        run: npm test --if-present
+        run: cd client && npm ci
 
       - name: Build React app
-        run: npm run build
-      
+        run: |
+          cd client
+          npm run build
+        env:
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./client
+        env:
+          REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
