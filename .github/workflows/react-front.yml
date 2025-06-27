@@ -24,7 +24,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
       - name: Lint (optional, skip if no lint script)
         run: npm run lint || echo "Linting skipped"
@@ -34,3 +34,4 @@ jobs:
 
       - name: Build React app
         run: npm run build
+      
