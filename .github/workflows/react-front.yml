@@ -13,16 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout code
+        uses: actions/checkout@v3
 
       - name: Install dependencies
-        working-directory: ./client 
-        run: cd client && npm i
+        working-directory: ./client
+        run: npm i
 
       - name: Build React app
-        run: |
-          cd client
-          npm run build
+        working-directory: ./client
+        run: npm run build
         env:
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
