@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'client/**'
-      - '.github/workflows/deploy-frontend.yml'
+      - '.github/workflows/react-front.yml'
     branches:
       - main
 
