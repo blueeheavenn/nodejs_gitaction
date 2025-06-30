@@ -6,7 +6,7 @@ on:
       - 'client/**'
       - '.github/workflows/react-front.yml'
     branches:
-      - main
+      - master
 
 jobs:
   build_and_deploy:
